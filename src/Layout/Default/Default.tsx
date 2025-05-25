@@ -1,10 +1,10 @@
+import Header from "../../Component/Header/Header"
 import { Outlet } from "react-router"
 
 export default function Default() {
   return (
     <div>
-    Default
-    
+    <Header/>
     <Outlet/>
     </div>
 

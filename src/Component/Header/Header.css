@@ -1,0 +1,33 @@
+header{
+    
+  background-color: #adcef0;
+  padding: 10px 20px;
+  box-shadow: 4px 2px 42px #0762bd;
+  border-radius: 36px;
+
+}
+header li{
+    width: 12vw;
+}
+.Ul_Nav_Header{
+
+    list-style: none;
+    display: flex;
+}
+
+.Ul_Nav_Header_Link{
+
+text-decoration: none;
+  color: #2e31c8;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+.Ul_Nav_Header_Link:hover{
+  background-color: #2e31c8;
+  color: white;
+  transition: all 0.3s ease-in-out;
+   cursor: pointer;
+}
