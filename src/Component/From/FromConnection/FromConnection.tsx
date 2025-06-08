@@ -13,6 +13,7 @@ const API_URL = import.meta.env.VITE_API_URL;
     const[ErrorMessageEmail,setMessageEmail] = useState<string>("")
  
     const[ErrorPassword, setErrorPasssword] = useState<boolean>(false)
+     const[ErrorMessagePassword,setErrorMessagePassword] = useState<string>('')
 
     /* all error email input */
     function ErrorEmailInput(){
@@ -23,7 +24,9 @@ const API_URL = import.meta.env.VITE_API_URL;
         }
 
     }
-
+    function ErrorPasswordInput(){
+    return <div>{ErrorMessagePassword}</div>
+    }
     /*connection user*/
    async function connection(){
 
@@ -67,18 +70,21 @@ if(FullObject === true){
     if(reponse.status == false ){
 
    setMessageEmail(reponse.errorMail)
+   
+   if(reponse.pass == false){
+
+   setErrorMessagePassword("mot passe incorrect")
+   
+}else{
+    setErrorMessagePassword(" ")
+}
 
     }else{
         setErroremail(true);
     }
     console.log("reponse data connection",reponse);
 
-}else{
-
-
 }
-
-
 
     }
 
@@ -90,14 +96,21 @@ if(FullObject === true){
             <div>
             <h1>Connexion</h1>
             <label htmlFor="email">Email:</label>
-            <input type="email" onChange={e =>setEmail(e.target.value)}  /> 
+            <input type="email" value={email} onChange={e =>setEmail(e.target.value)}  /> 
             <div>
             <ErrorEmailInput/>
             </div>
             </div>
+
+            <div>
+            <div>
             <label htmlFor="password">Mot de passe:</label>
             <input type="password" onChange={e => setPassword(e.target.value)}   />
-            
+             </div>
+             <div>
+            <ErrorPasswordInput/>
+             </div>
+             </div>
             <input type="submit"/>
         </form>
     </div>
