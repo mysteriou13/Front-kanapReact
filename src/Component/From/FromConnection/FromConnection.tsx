@@ -1,98 +1,92 @@
 import  { useState } from "react";
 import "./FromConnection.css"
-import { flushSync } from "react-dom";
 
 export default function FromConnection() {
-const API_URL = import.meta.env.VITE_API_URL;
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const[FullObject,setFullObject] = useState<boolean>(false)
-    const[bolsubmit,setSubmit] = useState<boolean>(false)
 
-    const[ErrorEmail, setErroremail] = useState<boolean>(false)
+    const API_URL = import.meta.env.VITE_API_URL;
+
+
+    const [email, setEmail] = useState<string>("");
+    
+    const [password, setPassword] = useState<string>("");
+    
+    const[_FullObject,setFullObject] = useState<boolean>(false)
+    
+    const[_bolsubmit,setSubmit] = useState<boolean>(false)
+
     const[ErrorMessageEmail,setMessageEmail] = useState<string>("")
  
-    const[ErrorPassword, setErrorPasssword] = useState<boolean>(false)
      const[ErrorMessagePassword,setErrorMessagePassword] = useState<string>('')
 
     /* all error email input */
     function ErrorEmailInput(){
-        if(bolsubmit == true && email !=="" && ErrorEmail == false){
+        
        return <div>
         {ErrorMessageEmail}
         </div>
-        }
+        
 
     }
     function ErrorPasswordInput(){
     return <div>{ErrorMessagePassword}</div>
     }
-    /*connection user*/
-   async function connection(){
-
-        setSubmit(true);
-
-    const user:object= {
-        email:email,
-        password:password
-    }    
-
-  
-/* verif if  all input formulaire is full*/
-   for (const value of Object.values(user)) {
-
-     if (value === "") {
-  setFullObject(false)
-     }else{
-        setFullObject(true)
-     }
-
-}
-
-/*if  all input  is full fetch data at back*/
-if(FullObject === true){
-
-    console.log("fullobjet",user)
-
-    let data  = await fetch(`${API_URL}/users/connection`,{
-
-         headers: {
-           "Content-Type": "application/json",
-       },
-
-        method:"POST",
-        body:JSON.stringify(user)
-
-    })
+    /* function for Fromualire is full*/
+    function isFormFull(user: Record<string, string>) {
+        return Object.values(user).every(value => value !== "");
+      }
     
-    let reponse = await data.json();
-      
-    if(reponse.status == false ){
+      /*connection user*/
+      async function connection(e: React.FormEvent) {
+        e.preventDefault();
+        setSubmit(true);
+    
+        const user = {
+          email,
+          password
+        };
+    
+        /* if le all input is not empty*/
+        if (!isFormFull(user)) {
+          setFullObject(false);
+          return;
+        } else {
+          setFullObject(true);
+        }
+        
+     
+        let data = await fetch(`${API_URL}/users/connection`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(user)
+        });
+    
+        let reponse = await data.json();
+    
+        console.log("reponse connection",reponse);
+    
+          if (reponse.mail == false) {
+            setMessageEmail("email non trouver");
+          } 
+          if (reponse.mail == true) {
+            setMessageEmail("");
+          }
 
-   setMessageEmail(reponse.errorMail)
-   
-   if(reponse.pass == false){
+          if (reponse.pass == false) {
+            setErrorMessagePassword("mot passe incorrect");
+          } else {
+            setErrorMessagePassword("");
+          }
 
-   setErrorMessagePassword("mot passe incorrect")
-   
-}else{
-    setErrorMessagePassword(" ")
-}
-
-    }else{
-        setErroremail(true);
-    }
-    console.log("reponse data connection",reponse);
-
-}
-
-    }
-
+        
+        setSubmit(false);
+      }
 
     return (
         <>
     <div>
-        <form action = {connection}>
+        <form onSubmit={connection}>
             <div>
             <h1>Connexion</h1>
             <label htmlFor="email">Email:</label>
