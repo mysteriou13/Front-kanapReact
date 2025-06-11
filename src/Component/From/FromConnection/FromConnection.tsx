@@ -1,10 +1,18 @@
-import  { useState } from "react";
+import  {  useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../../Store/store'; // adapte le chemin selon ton arborescence
+
+import { addlogin } from '../../../Store/Slice'; // adapte le chemin selon ton arborescence
 import "./FromConnection.css"
 
 export default function FromConnection() {
+const API_URL = import.meta.env.VITE_API_URL;
+const dispatch = useDispatch();
+const login = useSelector((state: RootState) => state.user.login);
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
+    let navigate = useNavigate();
 
     const [email, setEmail] = useState<string>("");
     
@@ -18,13 +26,20 @@ export default function FromConnection() {
  
      const[ErrorMessagePassword,setErrorMessagePassword] = useState<string>('')
 
+       useEffect(() => {
+        if (login) {
+          navigate("/");
+
+        }
+      }, [login]);
+
+
     /* all error email input */
     function ErrorEmailInput(){
         
        return <div>
         {ErrorMessageEmail}
-        </div>
-        
+        </div>  
 
     }
     function ErrorPasswordInput(){
@@ -66,6 +81,12 @@ export default function FromConnection() {
     
         console.log("reponse connection",reponse);
     
+          if(reponse.status == true){
+             
+            localStorage.setItem("token",reponse.token);
+            dispatch(addlogin(reponse.token));
+          }
+
           if (reponse.mail == false) {
             setMessageEmail("email non trouver");
           } 
@@ -82,6 +103,11 @@ export default function FromConnection() {
         
         setSubmit(false);
       }
+  
+      /*useeffet si le token est  dans localstorage apres connection*/
+
+    
+
 
     return (
         <>
