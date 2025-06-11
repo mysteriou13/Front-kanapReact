@@ -85,6 +85,7 @@ const login = useSelector((state: RootState) => state.user.login);
              
             localStorage.setItem("token",reponse.token);
             dispatch(addlogin(reponse.token));
+            
           }
 
           if (reponse.mail == false) {
@@ -112,11 +113,16 @@ const login = useSelector((state: RootState) => state.user.login);
     return (
         <>
     <div>
-        <form onSubmit={connection}>
-            <div>
+        <form onSubmit={connection} className="fromconnection">
             <h1>Connexion</h1>
+            <div>
+            
+            <div>
             <label htmlFor="email">Email:</label>
+            </div>
+            <div>
             <input type="email" value={email} onChange={e =>setEmail(e.target.value)}  /> 
+            </div>
             <div>
             <ErrorEmailInput/>
             </div>
@@ -124,8 +130,12 @@ const login = useSelector((state: RootState) => state.user.login);
 
             <div>
             <div>
+            <div>
             <label htmlFor="password">Mot de passe:</label>
+            </div>
+            <div>
             <input type="password" onChange={e => setPassword(e.target.value)}   />
+             </div>
              </div>
              <div>
             <ErrorPasswordInput/>
