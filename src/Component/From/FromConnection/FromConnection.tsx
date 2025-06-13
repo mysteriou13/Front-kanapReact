@@ -20,7 +20,7 @@ const login = useSelector((state: RootState) => state.user.login);
     
     const[_FullObject,setFullObject] = useState<boolean>(false)
     
-    const[_bolsubmit,setSubmit] = useState<boolean>(false)
+    const[bolsubmit,setbolSubmit] = useState<boolean>(false)
 
     const[ErrorMessageEmail,setMessageEmail] = useState<string>("")
  
@@ -34,14 +34,7 @@ const login = useSelector((state: RootState) => state.user.login);
       }, [login]);
 
 
-    /* all error email input */
-    function ErrorEmailInput(){
-        
-       return <div>
-        {ErrorMessageEmail}
-        </div>  
 
-    }
     function ErrorPasswordInput(){
     return <div>{ErrorMessagePassword}</div>
     }
@@ -53,7 +46,7 @@ const login = useSelector((state: RootState) => state.user.login);
       /*connection user*/
       async function connection(e: React.FormEvent) {
         e.preventDefault();
-        setSubmit(true);
+       setbolSubmit(true);
     
         const user = {
           email,
@@ -102,14 +95,9 @@ const login = useSelector((state: RootState) => state.user.login);
           }
 
         
-        setSubmit(false);
+        setbolSubmit(true);
       }
   
-      /*useeffet si le token est  dans localstorage apres connection*/
-
-    
-
-
     return (
         <>
     <div>
@@ -124,9 +112,17 @@ const login = useSelector((state: RootState) => state.user.login);
             <input type="email" value={email} onChange={e =>setEmail(e.target.value)}  /> 
             </div>
             <div>
-            <ErrorEmailInput/>
-            </div>
-            </div>
+       { bolsubmit && (
+          <>
+        <div className="errorInput">
+             {ErrorMessageEmail}
+        </div>
+          </>
+
+      )}
+
+  </div>
+  </div>
 
             <div>
             <div>
@@ -137,9 +133,12 @@ const login = useSelector((state: RootState) => state.user.login);
             <input type="password" onChange={e => setPassword(e.target.value)}   />
              </div>
              </div>
-             <div>
-            <ErrorPasswordInput/>
+             {bolsubmit && (
+             <div className="errorInput">
+                <div>{ErrorMessagePassword}</div>
              </div>
+             )}
+
              </div>
             <input type="submit"/>
         </form>
