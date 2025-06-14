@@ -1,0 +1,59 @@
+/**/
+/* Style pour la page Profil utilisateur */
+
+.profil-container {
+ max-width: 69%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  padding: 32px 24px;
+  position: relative;
+  top: 6vh;
+  left: 14%;
+
+}
+
+.profil-container h2 {
+  text-align: center;
+  color: #2d3a4b;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.profil-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.profil-container li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1.1rem;
+}
+
+.profil-container li:last-child {
+  border-bottom: none;
+}
+
+.profil-container strong {
+  color: #4a90e2;
+  min-width: 120px;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .profil-container {
+    padding: 16px 6px;
+  }
+  .profil-container h2 {
+    font-size: 1.3rem;
+  }
+  .profil-container li {
+    font-size: 1rem;
+  }
+}

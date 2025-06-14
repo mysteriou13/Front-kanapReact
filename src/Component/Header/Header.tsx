@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router"
 import { useSelector,useDispatch } from 'react-redux';
 import type { RootState } from '../../Store/store';
 import "./Header.css"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { addlogin } from "../../Store/Slice";
 
 export default function Header() {
@@ -11,7 +11,9 @@ export default function Header() {
   const navigate = useNavigate();
 
   let login = useSelector((state: RootState) => state.user.login);
+  const[datauser,setDataUser] = useState<any>({});
 
+  
   function deconnection(){
     localStorage.removeItem("token");
     dispatch(addlogin(""));
@@ -19,13 +21,29 @@ export default function Header() {
   }
 
    useEffect(() => {
-    if (!login) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        dispatch(addlogin(token));
-      }
+    const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      dispatch(addlogin(token));
+      const API_URL = import.meta.env.VITE_API_URL;
+      let datauser = await fetch(`${API_URL}/users/datauser`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token // <-- Utilise directement le token ici
+        }
+      });
+
+      let reponse = await datauser.json();
+      localStorage.setItem("datauser", JSON.stringify(reponse));
+      let reponsedata = JSON.parse(localStorage.getItem("datauser") || "{}");
+      setDataUser(reponsedata.data);
+
+      console.log("datauser", reponsedata.data);
     }
-  }, [login]);
+  };
+  fetchData();
+}, [login]);
 
   return (
     <>
@@ -34,12 +52,16 @@ export default function Header() {
         {/* menu nav horizontal en flex*/}
        <nav>
         <ul className="Ul_Nav_Header">
-         
+
+          {login &&(
+          <li className="Ul_Nav_Header_Link">bonjour {datauser.firstName}</li>
+          )}
             <li><Link to="/" className="Ul_Nav_Header_Link">Home </Link> </li>
             
           {login ? (
             <>
-              <li><Link to="/profil" className="Ul_Nav_Header_Link">profil</Link></li>  
+              
+              <li><Link to="/Profil" className="Ul_Nav_Header_Link">profil</Link></li>  
               <li><Link to="panier" className="Ul_Nav_Header_Link">panier </Link></li>
 
               <li><p className="buttonDeconnection" onClick={()=> deconnection()}> Deconnection</p></li>

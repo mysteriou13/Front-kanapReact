@@ -34,10 +34,6 @@ const login = useSelector((state: RootState) => state.user.login);
       }, [login]);
 
 
-
-    function ErrorPasswordInput(){
-    return <div>{ErrorMessagePassword}</div>
-    }
     /* function for Fromualire is full*/
     function isFormFull(user: Record<string, string>) {
         return Object.values(user).every(value => value !== "");

@@ -4,6 +4,7 @@ import Test from "./Component/Test/Test";
 import Default from "./Layout/Default/Default";
 import Connection from "./Page/Connection/Connection";
 import Inscription from "./Page/Inscription/Inscription";
+import Profil from "./Page/Profil/Profil";
 import NotFound from "./Page/NotFound/NotFound";
 import Panier from "./Page/Panier/Panier";
 export const router = createBrowserRouter([
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
      {
       path: "panier",
       element: <Panier />,
+     },
+
+     {path: "profil",
+      element: <Profil />,
      }
     ],
   },
