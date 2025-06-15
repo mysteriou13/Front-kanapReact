@@ -49,7 +49,6 @@ export default function Profil() {
             <h2>Profil utilisateur</h2>
             <ul>
                 {Object.entries(editData)
-                  .filter(([key]) => key !== "_id" && key !== "id" && key !== "__v")
                   .map(([key, value]) => (
                     <li key={key}>
                         <strong>{key} :</strong>
