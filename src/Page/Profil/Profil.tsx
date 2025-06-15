@@ -36,7 +36,7 @@ export default function Profil() {
     })
 
     let reponse = await data.json();
-    if (reponse.success) {
+    if (reponse.status === true) {
         console.log("Utilisateur mis à jour avec succès");
         // Mettre à jour le localStorage avec les nouvelles données
         localStorage.setItem("datauser", JSON.stringify({ data: editData }));
