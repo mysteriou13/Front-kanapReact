@@ -57,3 +57,18 @@
     font-size: 1rem;
   }
 }
+
+.inputProfil{
+  all:unset
+}
+
+.buttonProfil {
+  all:unset;
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+}
