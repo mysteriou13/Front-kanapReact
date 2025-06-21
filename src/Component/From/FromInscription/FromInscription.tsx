@@ -4,50 +4,57 @@ import  { useState } from 'react';
 /*inscription user*/
 export default function FromInscription() {
 
-const [firstName, setFirstName] = useState<string>("");
-const [lastName, setLastName] = useState<string>("");
-const [email, setEmail] = useState<string>("");
-const [password, setPassword] = useState<string>("");
-const [confirmPassword, setConfirmPassword] = useState<string>("");
-const [address, setAddress] = useState<string>("");
-const [county, setCountry] = useState<string>("");
-const [city, setCity] = useState<string>("");
-const [zipCode, setZipCode] = useState<string>("");
-const [phone, setPhone] = useState<string>("");
 
-const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>("");
-const [FullObject,setFullObject] = useState<boolean>(false);
-const [errorEmailText, setErrorEmailText] = useState<string>("");
-const [errorEmail, setErrorEmail] = useState<boolean>(false);
+
+const [datastring, setdatastring] = useState<{
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  address: string;
+  country: string;
+  city:string;
+  zipCode:string;
+  phone:string;
+  errorConfirmPassword:string;
+  errorEmail:boolean;
+  errorEmailText:string;
+}>({
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  address: '',
+  country: '',
+  city: '',
+  zipCode: '',
+  phone: '',
+  errorConfirmPassword:'',
+  errorEmail: false,
+  errorEmailText:''
+});
 
 /*verif que le formualaire a etais soumis*/
 const [bolsubmit,bolsetSubmit] = useState<boolean>(false);
 
-  async function inscription(){
- bolsetSubmit(true);
- let user = {
-  firstName: firstName,
-  lastName: lastName,
-  email: email,
-  password: password,
-  address: address,
-  city: city,
-  zipCode: zipCode,
-  country: county,
-  phone: phone
-}
+  const inscription = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let FullObject:boolean = false
+ 
+    bolsetSubmit(true);
 
-/*parcourir l'object user pour verfier si un champ est vide avec map*/
+    /*data pour le back*/
+   const { errorConfirmPassword, errorEmail, errorEmailText, ...user } = datastring;
 
 
-
-for (const key of Object.keys(user) as Array<keyof typeof user>) {
-  if (user[key] === "") {
-
-    setFullObject(false);
-
+for (const [key, value] of Object.entries(user)) {
+  console.log(`${key}: ${value}`);
+  if(value ===""){
+FullObject = false
   }else{
-    setFullObject(true);
+    FullObject = true;
   }
 }
 
@@ -55,15 +62,14 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 /*verif que le password et que confirm password sont indentique*/
 
-if (password !== confirmPassword) {	
-   setErrorConfirmPassword("Les mots de passe ne correspondent pas.");
+if (datastring.password !== datastring.confirmPassword) {	
+   setdatastring({...datastring, errorConfirmPassword:"Les mots de passe ne correspondent pas."});
 }else{
-  setErrorConfirmPassword(""); // Réinitialiser l'erreur si les mots de passe correspondent
+  setdatastring({...datastring, errorConfirmPassword:""}); // Réinitialiser l'erreur si les mots de passe correspondent
 }
 
-console.log(FullObject, "FullObject");
 
-if(FullObject == true  && errorEmail == false && password === confirmPassword){
+if(FullObject == true  && datastring.errorEmail == false && datastring.password === datastring.confirmPassword){
 let data = await fetch(`${API_URL}/users/inscription`, {
   method:"POST",
   headers: {
@@ -77,8 +83,7 @@ let reponse = await data.json();
 console.log("fetch inscription",reponse.status);
 
 if(reponse.status == false){
- setErrorEmail(true)
-  setErrorEmailText(reponse.message);
+  setdatastring({...datastring,errorEmailText:reponse.message})
 
 }
 
@@ -89,66 +94,47 @@ if(reponse.status == false){
 
 
   }
-
-
-  function verifyEmail(email: string) {
-
-    let regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    setEmail(email)
-
-  if (!regexEmail.test(email)) {
-     
-    setErrorEmail(true)
-    setErrorEmailText("Veuillez entrer un email valide.");
-
-    }else{
-    
-      setErrorEmail(false);
-      setErrorEmailText(""); // Réinitialiser l'erreur si l'email est valide
-    
-    }
-  }
-
   return (
     <>
     <div>
      
-    <form action = {inscription} className = "fromInscription">
-   <h1>Inscription</h1>
+    <form onSubmit={inscription} className = "fromInscription">
     <label htmlFor="firstName">Prénom</label>
-    <input type="text" id="firstName" name="firstName" value ={firstName} required onChange={e => setFirstName(e.target.value)}/>
+    <input type="text" id="firstName" name="firstName" value ={datastring.firstName} required onChange={e =>setdatastring({...datastring, firstName:e.target.value})}/>
     <label htmlFor="lastName">Nom</label>
-    <input type="text" id="lastName" name="lastName" value = {lastName} onChange={e=> setLastName(e.target.value)}required/>   
+    <input type="text" id="lastName" name="lastName" value = {datastring.lastName} 
+    onChange={e=> setdatastring({ ...datastring, lastName:e.target.value})}required/>   
+
     <label htmlFor="email">Email</label>  
-    <input type="email" id="email" name="email" value = {email} onChange={e=> verifyEmail(e.target.value)} required/> 
+    <input type="email" id="email" name="email" value = {datastring.email} onChange={e=> setdatastring({...datastring, email:e.target.value})} required/> 
     {/* Affichage de l'erreur si l'email n'est pas valide */}
-    {errorEmail &&
-    <p className="errorMail">{errorEmailText}</p>
+    {datastring.errorEmail &&
+    <p className="errorMail">{datastring.errorEmailText}</p>
     
     }
 
 
       
     <label htmlFor="password">Mot de passe</label>
-    <input type="password" id="password" name="password"  onChange={e=> setPassword(e.target.value)} required/>
+    <input type="password" id="password" name="password"  onChange={e=> setdatastring({...datastring, password:e.target.value })} required/>
     <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
-    <input type="password" id="confirmPassword" name="confirmPassword"   onChange = {e=>setConfirmPassword(e.target.value)}required/>
- {password && confirmPassword  && bolsubmit && (password !== confirmPassword ? (
-      <p className="error">{errorConfirmPassword}</p>
+    <input type="password" id="confirmPassword" name="confirmPassword"   onChange = {e=>setdatastring({...datastring, confirmPassword:e.target.value})}required/>
+ {datastring.password && datastring.confirmPassword  && bolsubmit && (datastring.password !== datastring.confirmPassword ? (
+      <p className="error">{datastring.errorConfirmPassword}</p>
     ) : (
       <p className="success">Les mots de passe correspondent.</p>
     )
   )}
     <label htmlFor="address">Adresse</label> 
-    <input type="text" id="address" name="address" value = {address} onChange={e=> setAddress(e.target.value)} required/>
+    <input type="text" id="address" name="address" value = {datastring.address} onChange={e=> setdatastring({...datastring, address:e.target.value})} required/>
     <label htmlFor="city">Ville</label>
-    <input type="text" id="city" name="city" value = {city} onChange={e=> setCity(e.target.value)} required/>
+    <input type="text" id="city" name="city" value = {datastring.city} onChange={e=> setdatastring({...datastring,city:e.target.value})} required/>
     <label htmlFor="zipCode">Code postal</label>
-    <input type="text" id="zipCode" name="zipCode" value={zipCode} onChange={e=> setZipCode(e.target.value)}  required/>
+    <input type="text" id="zipCode" name="zipCode" value={datastring.zipCode} onChange={e=> setdatastring({...datastring, zipCode:e.target.value})}  required/>
     <label htmlFor="country">Pays</label>
-    <input type="text" id="country" name="country" value  =  {county} onChange={e=> setCountry(e.target.value)} required/>
+    <input type="text" id="country" name="country" value  =  {datastring.country} onChange={e=> setdatastring({...datastring, country:e.target.value})} required/>
     <label htmlFor="phone">Téléphone</label>
-    <input type="tel" id="phone" name="phone" value = {phone} onChange={e=> setPhone(e.target.value)} required/>
+    <input type="tel" id="phone" name="phone" value = {datastring.phone} onChange={e=> setdatastring({...datastring, phone:e.target.value})} required/>
 
    <input type= "submit"/>
 
