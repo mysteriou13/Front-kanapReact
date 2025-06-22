@@ -1,0 +1,10 @@
+.img_kanap_acceuil{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.div_img_kanap_acceuil{
+     width: 27vw;
+    height: 52vh;
+}

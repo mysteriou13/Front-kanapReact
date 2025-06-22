@@ -14,7 +14,7 @@ export default function Header() {
   const[datauser,setDataUser] = useState<any>({});
 
   
-  function deconnection(){
+  const  deconnection= () =>{
     localStorage.removeItem("token");
     dispatch(addlogin(""));
     navigate("/");
