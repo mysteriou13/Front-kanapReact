@@ -15,15 +15,22 @@
     box-sizing: border-box;
     transition: all 0.3s ease;
     margin: 20px auto;
-    max-width: 600px;
     position: relative;
     overflow: hidden;
     z-index: 1;
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 1.2em;
     line-height: 1.5;
 }
 
+.input_inscription{
+    height: 3vh;
+    width: 38vw;
+}
+
+.button_submit{
+    font-size: 1.3em;
+}
 
 .errorMail{
 color:red;

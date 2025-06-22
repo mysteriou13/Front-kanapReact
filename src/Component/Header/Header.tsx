@@ -30,7 +30,7 @@ export default function Header() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token // <-- Utilise directement le token ici
+          Authorization: token 
         }
       });
 
