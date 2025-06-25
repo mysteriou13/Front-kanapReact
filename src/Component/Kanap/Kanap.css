@@ -1,0 +1,26 @@
+.img_kanap_acceuil {
+    background-color: unset;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* border-radius: 13%; */
+}
+.div_img_kanap_acceuil{
+     width: 80%;
+    height: 52vh;
+}
+
+.main_div_kanap_acceuil{
+
+    border-radius: 4%;
+    box-shadow: 8px 15px 15px #000000cf;
+    background-color: white;
+    border: 3px solid #7b7678;
+}
+.main_text_kanap{
+
+    margin-left: 4%;
+    font-weight: bolder;
+    font-size: 1.4em;
+
+}
