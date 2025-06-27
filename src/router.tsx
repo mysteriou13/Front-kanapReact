@@ -7,6 +7,7 @@ import Inscription from "./Page/Inscription/Inscription";
 import Profil from "./Page/Profil/Profil";
 import NotFound from "./Page/NotFound/NotFound";
 import Panier from "./Page/Panier/Panier";
+import OneKanap from "./Page/OneKanap/OneKanap";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +44,11 @@ export const router = createBrowserRouter([
 
      {path: "profil",
       element: <Profil />,
+     },
+      
+     {
+      path:"product/:id",
+      element : <OneKanap/>
      }
     ],
   },
