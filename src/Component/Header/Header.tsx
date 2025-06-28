@@ -11,6 +11,12 @@ export default function Header() {
   const navigate = useNavigate();
 
   let login = useSelector((state: RootState) => state.user.login);
+  
+  let panier = useSelector((state: RootState) => state.user.panier);
+
+  // Ensure panierCount is a number for rendering
+  const panierCount = panier.length;
+
   const[datauser,setDataUser] = useState<any>({});
 
   
@@ -62,11 +68,9 @@ export default function Header() {
             <>
               
               <li><Link to="/Profil" className="Ul_Nav_Header_Link">profil</Link></li>  
-              <li><Link to="panier" className="Ul_Nav_Header_Link">panier </Link></li>
+              <li><Link to="panier" className="Ul_Nav_Header_Link">panier({panierCount}) </Link></li>
 
               <li><p className="buttonDeconnection" onClick={()=> deconnection()}> Deconnection</p></li>
-               
-               
             </>
           ) : (
             <>

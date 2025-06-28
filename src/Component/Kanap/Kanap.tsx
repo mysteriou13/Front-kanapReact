@@ -1,11 +1,17 @@
 
 import "./Kanap.css"
 import type { KanapProps } from "../../Interface/InterfaceKanap";
+
+import {addPanier}  from "../../Store/Slice"
+
+import { useDispatch } from "react-redux"; 
 import {  useEffect, useState } from "react";
 
 export default function Kanap({ item, mode }: KanapProps) {
 
     const API_URL = import.meta.env.VITE_API_URL;
+
+    const dispatch = useDispatch();
 
     const { _id, imageUrl, altTxt, name, price, colors } = item;
       
@@ -26,6 +32,8 @@ const addkanap = () => {
         nbkananp: nbkananp
     };
     // Add your logic to handle adding to cart here
+ 
+    dispatch(addPanier(panier))
 };
 
 useEffect(() => {

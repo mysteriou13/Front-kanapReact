@@ -1,0 +1,34 @@
+.img_panier{
+    width: 100%;
+}
+
+.div_panier{
+    width: 22vw;
+}
+
+.main_div_panier{
+    display: flex;
+    flex-direction: column;
+    border: 3px solid;
+    border-radius: 30px;
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+
+.main_flex_panier{
+    
+    display: flex;
+   
+
+}
+
+.total_panier{
+
+    border: 3px solid;
+    border-radius: 30px;
+    height: 75vh;
+    width: 45vw;
+    margin-left: 2%;
+    margin-top: 1%;
+
+}
