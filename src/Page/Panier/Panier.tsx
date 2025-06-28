@@ -14,12 +14,22 @@ export default function Panier() {
   
   const [totalunitaire,settotalunitaire] =useState<number[]>([])
 
+  const [tabtotalquantity,settabtotalquantity] =useState<number[]>([])
+
+  const [totalkanap, settotalkananb] = useState<number>(0)
+
+
   let totalpricecalcul:number = 0
 
+  let totalquantitynb:number = 0;
+
+  
 
   let [totalprice,settotalprice] = useState<number>();
 
-  useEffect(() => {
+  /*total prix du panier*/
+  const caltotlalprice = ()=>{
+    /*total de la commande*/
     const totals = (panier as PanierItem[]).map((data) => {
       return data.nbkananp * data.price;
     });
@@ -35,9 +45,34 @@ export default function Panier() {
 
      settotalprice(totalpricecalcul)
 
-     
-    
+  }
 
+/*total quantity kanap dans le panier*/
+  const caltotlaquantity = ()=>{
+
+      const quantities = (panier as PanierItem[]).map((data: PanierItem) => {
+     console.log("panier", data.nbkananp);
+     return data.nbkananp;
+   });
+   settabtotalquantity(quantities);
+ 
+   for(let a: number = 0; a < tabtotalquantity.length; a++) {
+   
+       totalquantitynb = totalquantitynb + tabtotalquantity[a];
+    
+    }
+settotalkananb(totalquantitynb)
+
+  }
+  useEffect(() => {
+
+    
+   /*calcul quantity panier*/
+   caltotlalprice()
+
+   caltotlaquantity();
+ 
+console.log("total map quantity",totalquantitynb);
   }, [totalprice]);
 
   return (
@@ -58,12 +93,14 @@ export default function Panier() {
         <p>Quantité : {item.nbkananp}</p>
         <p>Description : {item.description}</p>
         <p>Prix : {item.price} €</p>
-        <p>Sous total{item.price*item.nbkananp}€</p>
+        <p>Sous total:{item.price*item.nbkananp}€</p>
         </div>
       </div>
     ))}
     </div>
     <div className="total_panier">
+    
+    <div>nombre d'acticle:{totalkanap}</div>
 
       <div>
       total de la commande
