@@ -1,7 +1,7 @@
 
 import "./Kanap.css"
 import type { KanapProps } from "../../Interface/InterfaceKanap";
-import {  useState } from "react";
+import {  useEffect, useState } from "react";
 
 export default function Kanap({ item, mode }: KanapProps) {
 
@@ -10,27 +10,43 @@ export default function Kanap({ item, mode }: KanapProps) {
     const { _id, imageUrl, altTxt, name, price, colors } = item;
       
     const colorsString = colors[0];
+    let [main_kanap,setmainkanap] = useState<string>("")
+
+    let [img_kanap,setimgkanap] = useState<string>("")
 
     const [color,setColor] = useState<string>(colorsString)
     const [nbkananp,setNbkanap] =useState<number>(0);
 
 
-     const addkanap  = ()=>{
-  
-     const { _id, colors, ...rest } = item;
- let panier = {
-    ...rest,
-     color: color,
-     nbkananp: nbkananp
+const addkanap = () => {
+    const { _id, colors, ...rest } = item;
+    let panier = {
+        ...rest,
+        color: color,
+        nbkananp: nbkananp
+    };
+    // Add your logic to handle adding to cart here
 };
-         
-         }
+
+useEffect(() => {
+    if (mode === "one") {
+        
+      setmainkanap("main_div_One_kanap_acceuil");
+      setimgkanap("img_kanap_One_acceuil")
+
+    }
+
+    if (mode == "all") {
+        setmainkanap("main_div_kanap_acceuil");
+        setimgkanap("img_kanap_acceuil")
+    }
+}, [mode]);
 
     return (
-     <div className="main_div_kanap_acceuil" key={_id}>
+     <div className = {main_kanap} key={_id}>
        <div className="div_img_kanap_acceuil">
            
-           <img className="img_kanap_acceuil" src={`${API_URL}/images/${imageUrl}`} alt={altTxt} />
+           <img className={img_kanap} src={`${API_URL}/images/${imageUrl}`} alt={altTxt} />
            </div>
       <div className="main_text_kanap">
           <div>
