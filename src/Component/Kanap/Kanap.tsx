@@ -2,16 +2,11 @@
 import "./Kanap.css"
 import type { KanapProps } from "../../Interface/InterfaceKanap";
 
-import {addPanier}  from "../../Store/Slice"
-
-import { useDispatch } from "react-redux"; 
 import {  useEffect, useState } from "react";
 
 export default function Kanap({ item, mode }: KanapProps) {
 
     const API_URL = import.meta.env.VITE_API_URL;
-
-    const dispatch = useDispatch();
 
     const { _id, imageUrl, altTxt, name, price, colors } = item;
       
@@ -34,14 +29,13 @@ const addkanap = () => {
 
     // Récupère le panier existant ou un tableau vide
     const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
+
+    
     panierArray.push(newItem);
 
-    // Enregistre le nouveau tableau dans le localStorage
-    localStorage.setItem("panier", JSON.stringify(panierArray));
+  localStorage.setItem("panier", JSON.stringify(panierArray));
+  window.dispatchEvent(new Event("panierUpdated"));
 
-     console.log("addkanap",localStorage.getItem("panier"));
-
-    dispatch(addPanier(newItem));
 };
 
 useEffect(() => {

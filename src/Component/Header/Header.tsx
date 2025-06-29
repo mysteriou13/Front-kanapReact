@@ -11,14 +11,26 @@ export default function Header() {
   const navigate = useNavigate();
 
   let login = useSelector((state: RootState) => state.user.login);
-  
-  let panier = useSelector((state: RootState) => state.user.panier);
 
   // Ensure panierCount is a number for rendering
-  const panierCount = panier.length;
+  const [panierCount,setPanierCount] = useState(0);
 
   const[datauser,setDataUser] = useState<any>({});
 
+useEffect(() => {
+  const updatePanierCount = () => {
+    const localpanier = JSON.parse(localStorage.getItem("panier") || "[]");
+    setPanierCount(localpanier.length);
+  };
+
+  // Mets à jour au chargement
+  updatePanierCount();
+
+  // Mets à jour à chaque event custom
+  window.addEventListener("panierUpdated", updatePanierCount);
+
+ 
+}, []);
   
   const  deconnection= () =>{
     localStorage.removeItem("token");
