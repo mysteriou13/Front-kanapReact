@@ -4,18 +4,24 @@ import type { PanierItem } from "../../Interface/InterfacePanier";
 import { useEffect, useState } from "react";
 import "./Panier.css"
 
-
 export default function Panier() {
+
+  /*URL dans back*/
+  const API_URL = import.meta.env.VITE_API_URL;
+  
+  /*recuperation du panier du redux*/
   const panier = useSelector((state: RootState) => state.user.panier);
 
-    const API_URL = import.meta.env.VITE_API_URL;
-
+  /* le panier du redux en state */
   const [tabpanier] = useState<PanierItem[]>(panier as PanierItem[])
   
+  /*sous total prix des article*/
   const [totalunitaire,settotalunitaire] =useState<number[]>([])
 
+  /*tableaux des quantiter */
   const [tabtotalquantity,settabtotalquantity] =useState<number[]>([])
 
+  /*total quantiter article du panier*/
   const [totalkanap, settotalkananb] = useState<number>(0)
 
 
@@ -29,7 +35,7 @@ export default function Panier() {
 
   /*total prix du panier*/
   const caltotlalprice = ()=>{
-    /*total de la commande*/
+    /*total prix de la commande*/
     const totals = (panier as PanierItem[]).map((data) => {
       return data.nbkananp * data.price;
     });
@@ -79,29 +85,35 @@ console.log("total map quantity",totalquantitynb);
     <div>
 
     <div className="main_flex_panier"> 
-      
+    
     <div>
+
     {tabpanier.map((item, idx) => (
       <div key={idx}  className="main_div_panier">
-        <h3>{item.name}</h3>
+        <h1>{item.name}</h1>
         <div className="div_panier">
         <img  className = "img_panier" src={`${API_URL}/images/${item.imageUrl}`} alt={item.altTxt} />
          </div>
 
          <div>
+        <h2>
         <p>Couleur : {item.color}</p>
         <p>Quantité : {item.nbkananp}</p>
         <p>Description : {item.description}</p>
         <p>Prix : {item.price} €</p>
         <p>Sous total:{item.price*item.nbkananp}€</p>
+        </h2>
         </div>
       </div>
     ))}
+    
     </div>
+
     <div className="total_panier">
     
+    <h2>
     <div>nombre d'acticle:{totalkanap}</div>
-
+   </h2>
       <div>
       total de la commande
       </div>
