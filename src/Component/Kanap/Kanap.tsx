@@ -26,14 +26,22 @@ export default function Kanap({ item, mode }: KanapProps) {
 
 const addkanap = () => {
     const { _id, colors, ...rest } = item;
-    let panier = {
+    const newItem = {
         ...rest,
         color: color,
         nbkananp: nbkananp
     };
-    // Add your logic to handle adding to cart here
- 
-    dispatch(addPanier(panier))
+
+    // Récupère le panier existant ou un tableau vide
+    const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
+    panierArray.push(newItem);
+
+    // Enregistre le nouveau tableau dans le localStorage
+    localStorage.setItem("panier", JSON.stringify(panierArray));
+
+     console.log("addkanap",localStorage.getItem("panier"));
+
+    dispatch(addPanier(newItem));
 };
 
 useEffect(() => {

@@ -1,20 +1,17 @@
-import { useSelector } from "react-redux";
-import type { RootState } from "../../Store/store";
+
 import type { PanierItem } from "../../Interface/InterfacePanier";
 import { useEffect, useState } from "react";
 import "./Panier.css"
 
 export default function Panier() {
-
+ const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
   /*URL dans back*/
   const API_URL = import.meta.env.VITE_API_URL;
   
-  /*recuperation du panier du redux*/
-  const panier = useSelector((state: RootState) => state.user.panier);
+  const [panierdata, setpanierdata] = useState<PanierItem[]>([]);
 
   /* le panier du redux en state */
-  const [tabpanier] = useState<PanierItem[]>(panier as PanierItem[])
-  
+
   /*sous total prix des article*/
   const [totalunitaire,settotalunitaire] =useState<number[]>([])
 
@@ -24,19 +21,29 @@ export default function Panier() {
   /*total quantiter article du panier*/
   const [totalkanap, settotalkananb] = useState<number>(0)
 
-
   let totalpricecalcul:number = 0
 
   let totalquantitynb:number = 0;
 
-  
-
   let [totalprice,settotalprice] = useState<number>();
+
+  useEffect(()=>{
+
+  setpanierdata(panierArray)
+
+
+ caltotlalprice();
+
+   caltotlaquantity();
+ 
+  },[])
 
   /*total prix du panier*/
   const caltotlalprice = ()=>{
     /*total prix de la commande*/
-    const totals = (panier as PanierItem[]).map((data) => {
+     const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
+
+    const totals = (panierArray as PanierItem[]).map((data) => {
       return data.nbkananp * data.price;
     });
     settotalunitaire(totals);
@@ -55,11 +62,17 @@ export default function Panier() {
 
 /*total quantity kanap dans le panier*/
   const caltotlaquantity = ()=>{
+     
+ const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
 
-      const quantities = (panier as PanierItem[]).map((data: PanierItem) => {
-     console.log("panier", data.nbkananp);
+ console.log("cal totalquantity",panierArray);
+
+      const quantities = (panierArray as PanierItem[]).map((data: PanierItem) => {
      return data.nbkananp;
    });
+
+   console.log("quantity",quantities);
+
    settabtotalquantity(quantities);
  
    for(let a: number = 0; a < tabtotalquantity.length; a++) {
@@ -70,16 +83,16 @@ export default function Panier() {
 settotalkananb(totalquantitynb)
 
   }
+  
   useEffect(() => {
+  // Calcul du total prix
+  const totalPrice = panierdata.reduce((acc, item) => acc + item.price * item.nbkananp, 0);
+  settotalprice(totalPrice);
 
-    
-   /*calcul quantity panier*/
-   caltotlalprice()
-
-   caltotlaquantity();
- 
-console.log("total map quantity",totalquantitynb);
-  }, [totalprice]);
+  // Calcul du total quantité
+  const totalQuantity = panierdata.reduce((acc, item) => acc + item.nbkananp, 0);
+  settotalkananb(totalQuantity);
+}, [panierdata]);
 
   return (
     <div>
@@ -88,7 +101,7 @@ console.log("total map quantity",totalquantitynb);
     
     <div>
 
-    {tabpanier.map((item, idx) => (
+    {panierdata.map((item, idx) => (
       <div key={idx}  className="main_div_panier">
         <h1>{item.name}</h1>
         <div className="div_panier">
