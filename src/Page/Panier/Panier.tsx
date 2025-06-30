@@ -114,7 +114,9 @@ settotalkananb(totalquantitynb)
         <p>Quantité : {item.nbkananp}</p>
         <p>Description : {item.description}</p>
         <p>Prix : {item.price} €</p>
-        <p>Sous total:{item.price*item.nbkananp}€</p>
+        
+        <p>Sous total:{item.price*item.nbkananp}€</p> 
+        
         </h2>
         </div>
       </div>
