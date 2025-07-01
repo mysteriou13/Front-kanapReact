@@ -12,22 +12,32 @@ export default function Header() {
 
   let login = useSelector((state: RootState) => state.user.login);
 
+  let addpaniers = useSelector((state: RootState) => state.user.addpanier);
+
   // Ensure panierCount is a number for rendering
   const [panierCount,setPanierCount] = useState(0);
 
   const[datauser,setDataUser] = useState<any>({});
 
-useEffect(() => {
   const updatePanierCount = () => {
     const localpanier = JSON.parse(localStorage.getItem("panier") || "[]");
     setPanierCount(localpanier.length);
   };
 
+  useEffect(()=>{
+
+    console.log("Header", addpaniers);
+
+
   // Mets à jour au chargement
   updatePanierCount();
+  },[addpaniers])
+
+useEffect(() => {
+
 
   // Mets à jour à chaque event custom
-  window.addEventListener("panierUpdated", updatePanierCount);
+  //window.addEventListener("panierUpdated", updatePanierCount);
 
  
 }, []);
@@ -57,7 +67,6 @@ useEffect(() => {
       let reponsedata = JSON.parse(localStorage.getItem("datauser") || "{}");
       setDataUser(reponsedata.data);
 
-      console.log("datauser", reponsedata.data);
     }
   };
   fetchData();
@@ -66,7 +75,8 @@ useEffect(() => {
   return (
     <>
     <header>
-        
+      
+      
         {/* menu nav horizontal en flex*/}
        <nav>
         <ul className="Ul_Nav_Header">

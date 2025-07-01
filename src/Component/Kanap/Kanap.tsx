@@ -1,12 +1,14 @@
 
 import "./Kanap.css"
 import type { KanapProps } from "../../Interface/InterfaceKanap";
-
+import { useDispatch } from 'react-redux';
+import { boladdpanier } from "../../Store/Slice";
 import {  useEffect, useState } from "react";
 
 export default function Kanap({ item, mode }: KanapProps) {
 
     const API_URL = import.meta.env.VITE_API_URL;
+     const dispatch = useDispatch();
 
     const { _id, imageUrl, altTxt, name, price, colors } = item;
       
@@ -17,8 +19,7 @@ export default function Kanap({ item, mode }: KanapProps) {
 
     const [color,setColor] = useState<string>(colorsString)
     const [nbkananp,setNbkanap] =useState<number>(0);
-
-
+ 
 const addkanap = () => {
     const { _id, colors, ...rest } = item;
     const newItem = {
@@ -30,11 +31,11 @@ const addkanap = () => {
     // Récupère le panier existant ou un tableau vide
     const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
 
-    
     panierArray.push(newItem);
 
   localStorage.setItem("panier", JSON.stringify(panierArray));
-  window.dispatchEvent(new Event("panierUpdated"));
+
+   dispatch(boladdpanier());  
 
 };
 
