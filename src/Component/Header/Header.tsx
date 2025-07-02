@@ -33,18 +33,9 @@ export default function Header() {
   updatePanierCount();
   },[addpaniers])
 
-useEffect(() => {
-
-
-  // Mets à jour à chaque event custom
-  //window.addEventListener("panierUpdated", updatePanierCount);
-
- 
-}, []);
-  
   const  deconnection= () =>{
     localStorage.removeItem("token");
-    dispatch(addlogin(""));
+    dispatch(addlogin());
     navigate("/");
   }
 
@@ -52,7 +43,6 @@ useEffect(() => {
     const fetchData = async () => {
     const token = localStorage.getItem("token");
     if (token) {
-      dispatch(addlogin(token));
       const API_URL = import.meta.env.VITE_API_URL;
       let datauser = await fetch(`${API_URL}/users/datauser`, {
         method: "GET",
@@ -75,8 +65,7 @@ useEffect(() => {
   return (
     <>
     <header>
-      
-      
+  
         {/* menu nav horizontal en flex*/}
        <nav>
         <ul className="Ul_Nav_Header">
@@ -84,20 +73,20 @@ useEffect(() => {
           {login &&(
           <li className="Ul_Nav_Header_Link">bonjour {datauser.firstName}</li>
           )}
-            <li><Link to="/" className="Ul_Nav_Header_Link">Home </Link> </li>
+            <li onClick={()=> navigate("/")} className="Ul_Nav_Header_Link">Home </li>
             
           {login ? (
             <>
               
-              <li><Link to="/Profil" className="Ul_Nav_Header_Link">profil</Link></li>  
-              <li><Link to="panier" className="Ul_Nav_Header_Link">panier({panierCount}) </Link></li>
+              <li onClick={()=> navigate("/Profil")} className="Ul_Nav_Header_Link">profil </li>  
+              <li onClick={()=> navigate("/panier")}  className="Ul_Nav_Header_Link">panier({panierCount}) </li>
 
-              <li><p className="buttonDeconnection" onClick={()=> deconnection()}> Deconnection</p></li>
+              <li className="buttonDeconnection" onClick={()=> deconnection()}> Deconnection </li>
             </>
           ) : (
             <>
-              <li><Link to="connection" className="Ul_Nav_Header_Link"> connection</Link></li>
-              <li><Link to="inscription" className="Ul_Nav_Header_Link"> inscription</Link></li>  
+              <li onClick={()=> navigate("connection")} className="Ul_Nav_Header_Link"> connection</li>
+              <li onClick={()=> navigate("inscription")} className="Ul_Nav_Header_Link"> inscription</li>  
             </>
           )}
           

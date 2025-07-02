@@ -73,7 +73,7 @@ const login = useSelector((state: RootState) => state.user.login);
           if(reponse.status == true){
              
             localStorage.setItem("token",reponse.token);
-            dispatch(addlogin(reponse.token));
+            dispatch(addlogin());
             
           }
 
