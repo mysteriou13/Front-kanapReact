@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../../Store/store'; // adapte le chemin selon ton arborescence
 
 import { addlogin } from '../../../Store/Slice'; // adapte le chemin selon ton arborescence
+
+import LoadingSpinner from "../../LoadingSpinner/LoadingSpinner";
+
 import "./FromConnection.css"
 
 export default function FromConnection() {
@@ -67,9 +70,15 @@ const login = useSelector((state: RootState) => state.user.login);
         });
     
         let reponse = await data.json();
-    
-        console.log("reponse connection",reponse);
-    
+       
+         if(!reponse.status){
+
+          setbolSubmit(false);
+
+         }else{
+          setbolSubmit(true)
+         }
+       
           if(reponse.status == true){
              
             localStorage.setItem("token",reponse.token);
@@ -84,25 +93,32 @@ const login = useSelector((state: RootState) => state.user.login);
             setMessageEmail("");
           }
 
-          if (reponse.pass == false) {
+          if (reponse.pass == false && bolsubmit == false) {
             setErrorMessagePassword("mot passe incorrect");
           } else {
             setErrorMessagePassword("");
           }
 
+       console.log("fromconnection",reponse.pass,"/bolsumit/",bolsubmit);        
         
-        setbolSubmit(true);
       }
   
     return (
         <>
     <div>
+      
+      <div>
+ 
+   
+
+        {bolsubmit == false ?(
+        <div>        
         <form onSubmit={connection} className="fromconnection">
             <h1>Connexion</h1>
             <div>
             
             <div>
-            <label htmlFor="email">Email:</label>
+            <label className="label_connection" htmlFor="email">Email:</label>
             </div>
             <div>
             <input type="email" value={email} onChange={e =>setEmail(e.target.value)}  /> 
@@ -123,21 +139,36 @@ const login = useSelector((state: RootState) => state.user.login);
             <div>
             <div>
             <div>
-            <label htmlFor="password">Mot de passe:</label>
+            <label htmlFor="password" className="label_connection">Mot de passe:</label>
             </div>
             <div>
             <input type="password" onChange={e => setPassword(e.target.value)}   />
              </div>
              </div>
-             {bolsubmit && (
+             
              <div className="errorInput">
                 <div>{ErrorMessagePassword}</div>
              </div>
-             )}
+             
 
              </div>
             <input type="submit"/>
         </form>
+        </div>
+        ):(
+
+          <LoadingSpinner/>
+
+        )
+            }
+
+
+
+        <div>
+       
+        </div>
+        </div>
+
     </div>
   </>
   )
