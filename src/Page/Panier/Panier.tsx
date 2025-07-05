@@ -1,9 +1,12 @@
 
 import type { PanierItem } from "../../Interface/InterfacePanier";
+import { boladdpanier } from "../../Store/Slice";
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from "react";
 import "./Panier.css"
 
 export default function Panier() {
+  let dispatch = useDispatch();
  const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
   /*URL dans back*/
   const API_URL = import.meta.env.VITE_API_URL;
@@ -42,6 +45,8 @@ const delette_item  = (idx: number) => {
   settotalprice(totalPrice);
   const totalQuantity = updatedPanier.reduce((acc, item) => acc + item.nbkananp, 0);
   settotalkananb(totalQuantity);
+  dispatch(boladdpanier());
+  
 }
 
   return (
@@ -66,7 +71,7 @@ const delette_item  = (idx: number) => {
         <p>Prix : {item.price} €</p>
         
         <p>Sous total:{item.price*item.nbkananp}€</p> 
-        <p> <input type = "button" value = "supprimer"onClick={()=>delette_item(idx)}/>{idx}</p>
+        <p> <input type = "button" value = "supprimer"onClick={()=>delette_item(idx)}/></p>
         </h2>
         </div>
       </div>
@@ -74,6 +79,7 @@ const delette_item  = (idx: number) => {
     
     </div>
 
+    {panierdata.length > 0 &&
     <div className="total_panier">
     
     <h2>
@@ -88,7 +94,7 @@ const delette_item  = (idx: number) => {
       </div>
 
       </div> 
-
+      }
     </div>
 
     </div>
