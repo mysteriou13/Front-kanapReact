@@ -10,7 +10,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  let login = useSelector((state: RootState) => state.user.login);
+  let login = useSelector((state: RootState) => state.user.login) || localStorage.getItem("token");
 
   let addpaniers = useSelector((state: RootState) => state.user.addpanier);
 
@@ -35,6 +35,7 @@ export default function Header() {
 
   const  deconnection= () =>{
     localStorage.removeItem("token");
+    login = null;
     dispatch(addlogin());
     navigate("/");
   }

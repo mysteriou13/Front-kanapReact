@@ -10,79 +10,18 @@ export default function Panier() {
   
   const [panierdata, setpanierdata] = useState<PanierItem[]>([]);
 
-  /* le panier du redux en state */
-
-  /*sous total prix des article*/
-  const [totalunitaire,settotalunitaire] =useState<number[]>([])
-
-  /*tableaux des quantiter */
-  const [tabtotalquantity,settabtotalquantity] =useState<number[]>([])
-
   /*total quantiter article du panier*/
-  const [totalkanap, settotalkananb] = useState<number>(0)
-
-  let totalpricecalcul:number = 0
-
-  let totalquantitynb:number = 0;
+  const [totalkanap, settotalkananb] = useState<number>(0);
 
   let [totalprice,settotalprice] = useState<number>();
 
   useEffect(()=>{
 
-  setpanierdata(panierArray)
+  setpanierdata(panierArray);
 
-
- caltotlalprice();
-
-   caltotlaquantity();
+  console.log("panierdata", panierdata);
  
   },[])
-
-  /*total prix du panier*/
-  const caltotlalprice = ()=>{
-    /*total prix de la commande*/
-     const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
-
-    const totals = (panierArray as PanierItem[]).map((data) => {
-      return data.nbkananp * data.price;
-    });
-    settotalunitaire(totals);
-    
-     for(let a: number = 0; a < totalunitaire.length; a++){
-
-      console.log("prix unitaire",totalunitaire[a])
-
-      totalpricecalcul = totalpricecalcul+totalunitaire[a]
-
-     }
-
-     settotalprice(totalpricecalcul)
-
-  }
-
-/*total quantity kanap dans le panier*/
-  const caltotlaquantity = ()=>{
-     
- const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
-
- console.log("cal totalquantity",panierArray);
-
-      const quantities = (panierArray as PanierItem[]).map((data: PanierItem) => {
-     return data.nbkananp;
-   });
-
-   console.log("quantity",quantities);
-
-   settabtotalquantity(quantities);
- 
-   for(let a: number = 0; a < tabtotalquantity.length; a++) {
-   
-       totalquantitynb = totalquantitynb + tabtotalquantity[a];
-    
-    }
-settotalkananb(totalquantitynb)
-
-  }
   
   useEffect(() => {
   // Calcul du total prix
@@ -93,6 +32,17 @@ settotalkananb(totalquantitynb)
   const totalQuantity = panierdata.reduce((acc, item) => acc + item.nbkananp, 0);
   settotalkananb(totalQuantity);
 }, [panierdata]);
+
+const delette_item  = (idx: number) => {
+  const updatedPanier = panierdata.filter((_, index) => index !== idx);
+  setpanierdata(updatedPanier);
+  localStorage.setItem("panier", JSON.stringify(updatedPanier));
+  // Recalculer le total après suppression
+  const totalPrice = updatedPanier.reduce((acc, item) => acc + item.price * item.nbkananp, 0);
+  settotalprice(totalPrice);
+  const totalQuantity = updatedPanier.reduce((acc, item) => acc + item.nbkananp, 0);
+  settotalkananb(totalQuantity);
+}
 
   return (
     <div>
@@ -116,7 +66,7 @@ settotalkananb(totalquantitynb)
         <p>Prix : {item.price} €</p>
         
         <p>Sous total:{item.price*item.nbkananp}€</p> 
-        
+        <p> <input type = "button" value = "supprimer"onClick={()=>delette_item(idx)}/>{idx}</p>
         </h2>
         </div>
       </div>

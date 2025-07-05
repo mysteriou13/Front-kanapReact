@@ -32,6 +32,7 @@ const login = useSelector((state: RootState) => state.user.login);
        useEffect(() => {
         if (login) {
           navigate("/");
+        
 
         }
       }, [login]);
@@ -73,10 +74,8 @@ const login = useSelector((state: RootState) => state.user.login);
        
          if(!reponse.status){
 
-          setbolSubmit(false);
+           setTimeout(() => setbolSubmit(false), 2000);
 
-         }else{
-          setbolSubmit(true)
          }
        
           if(reponse.status == true){
