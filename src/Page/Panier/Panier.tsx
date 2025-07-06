@@ -1,4 +1,3 @@
-
 import type { PanierItem } from "../../Interface/InterfacePanier";
 import { boladdpanier } from "../../Store/Slice";
 import { useDispatch } from 'react-redux';
@@ -18,12 +17,34 @@ export default function Panier() {
 
   let [totalprice,settotalprice] = useState<number>();
 
+  const updatedata = ( itemcolor:string , color:string)=>{
+
+    const updatedPanier = panierdata.map((item) => {
+      if (item.color === itemcolor) {
+        return { ...item, color: color };
+      }
+      return item;
+    });
+    setpanierdata(updatedPanier);
+    localStorage.setItem("panier", JSON.stringify(updatedPanier));
+  
+  }
+
+  const updateItemField = (itemcolor: string, field: keyof PanierItem, value: any) => {
+    const updatedPanier = panierdata.map((item) => {
+      if (item.color === itemcolor) {
+        return { ...item, [field]: value };
+      }
+      return item;
+    });
+    setpanierdata(updatedPanier);
+    localStorage.setItem("panier", JSON.stringify(updatedPanier));
+  };
+
   useEffect(()=>{
 
   setpanierdata(panierArray);
 
-  console.log("panierdata", panierdata);
- 
   },[])
   
   useEffect(() => {
@@ -66,12 +87,23 @@ const delette_item  = (idx: number) => {
          <div>
         <h2>
         <p>Couleur : {item.color}</p>
-        <p>Quantité : {item.nbkananp}</p>
+        
+      
+   {/*liste color*/}
+   <select onChange={(e) => updateItemField(item.color, "color", e.target.value)} value={item.color}>
+  {item.listeColor.map((col) => (
+    <option value={col} key={col}>{col}</option>
+  ))}
+</select>
+
+
+
+        <p>Quantité : {item.nbkananp} <input type="number" min={1} value={item.nbkananp} onChange={(e) => updateItemField(item.color, "nbkananp", Number(e.target.value))} /> </p>
         <p>Description : {item.description}</p>
         <p>Prix : {item.price} €</p>
         
-        <p>Sous total:{item.price*item.nbkananp}€</p> 
-        <p> <input type = "button" value = "supprimer"onClick={()=>delette_item(idx)}/></p>
+        <p>Sous total:{item.price*item.nbkananp}€</p>
+        <p> <input type = "button" value = "supprimer" onClick={() => delette_item(idx)} /></p>
         </h2>
         </div>
       </div>

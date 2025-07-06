@@ -21,9 +21,10 @@ export default function Kanap({ item, mode }: KanapProps) {
     const [nbkananp,setNbkanap] =useState<number>(0);
  
 const addkanap = () => {
-    const { _id, colors, ...rest } = item;
+    const {  ...rest } = item;
     const newItem = {
         ...rest,
+        listeColor: colors,
         color: color,
         nbkananp: nbkananp
     };
