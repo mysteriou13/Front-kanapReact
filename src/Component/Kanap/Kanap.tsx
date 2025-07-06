@@ -32,11 +32,23 @@ const addkanap = () => {
     // Récupère le panier existant ou un tableau vide
     const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
 
-    panierArray.push(newItem);
+    // Vérifie si l'item existe déjà dans le panier
+    const existingItemIndex = panierArray.findIndex((i: any) => i._id === newItem._id && i.color === newItem.color);
 
-  localStorage.setItem("panier", JSON.stringify(panierArray));
+    if (existingItemIndex !== -1) {
+        // Si l'item existe déjà, on met à jour la quantité
+        panierArray[existingItemIndex].nbkananp += newItem.nbkananp;
+    } else {
+        // Sinon, on ajoute le nouvel item au panier
+        panierArray.push(newItem);
+           dispatch(boladdpanier()); 
+      }
+   
+    // Enregistre le panier mis à jour dans le localStorage
+    localStorage.setItem("panier", JSON.stringify(panierArray));
 
-   dispatch(boladdpanier());  
+
+ 
 
 };
 
@@ -74,7 +86,7 @@ useEffect(() => {
         {mode == "one"&&(  
       <>
             <div>
-                Quantity  <input type="number" value={nbkananp} onChange={e => setNbkanap(Number(e.target.value))} />
+                Quantity  <input type="number" min = "1" value={nbkananp} onChange={e => setNbkanap(Number(e.target.value))} />
               </div><div>
                   <label>
                     couleur

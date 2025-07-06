@@ -18,6 +18,7 @@ export default function Panier() {
   /*total prix du panier*/
   let [totalprice,settotalprice] = useState<number>();
 
+
   const updateItemField = (itemcolor: string, field: keyof PanierItem, value: any) => {
     const updatedPanier = panierdata.map((item) => {
       if (item.color === itemcolor) {
@@ -90,8 +91,8 @@ const delette_item  = (idx: number) => {
         <p>Description : {item.description}</p>
         <p>Prix : {item.price} €</p>
         
-        <p>Sous total:{item.price*item.nbkananp}€</p> {idx}
-        <p> <input type = "button" value = "supprimer" onClick={() => delette_item(idx)} /></p>
+        <p>Sous total:{item.price*item.nbkananp}€</p>       
+          <p> <input type = "button" value = "supprimer" onClick={() => delette_item(idx)} /></p>
         </h2>
         </div>
       </div>
