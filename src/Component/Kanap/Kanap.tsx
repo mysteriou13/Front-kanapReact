@@ -4,6 +4,7 @@ import type { KanapProps } from "../../Interface/InterfaceKanap";
 import { useDispatch } from 'react-redux';
 import { boladdpanier } from "../../Store/Slice";
 import {  useEffect, useState } from "react";
+import type { PanierItem } from "../../Interface/InterfacePanier";
 
 export default function Kanap({ item, mode }: KanapProps) {
 
@@ -26,11 +27,12 @@ const addkanap = () => {
         ...rest,
         listeColor: colors,
         color: color,
-        nbkananp: nbkananp
+        nbkananp: nbkananp,
+        description: item.description // Add the missing description property
     };
 
     // Récupère le panier existant ou un tableau vide
-    const panierArray = JSON.parse(localStorage.getItem("panier") || "[]");
+    const panierArray: PanierItem[] = JSON.parse(localStorage.getItem("panier") || "[]");
 
     // Vérifie si l'item existe déjà dans le panier
     const existingItemIndex = panierArray.findIndex((i: any) => i._id === newItem._id && i.color === newItem.color);

@@ -1,5 +1,6 @@
 
 export interface KanapItem {
+  description: string;
   _id: string;
   name: string;
   price: number;
