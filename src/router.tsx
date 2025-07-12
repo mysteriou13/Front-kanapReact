@@ -9,6 +9,7 @@ import Profil from "./Page/Profil/Profil";
 import NotFound from "./Page/NotFound/NotFound";
 import Panier from "./Page/Panier/Panier";
 import OneKanap from "./Page/OneKanap/OneKanap";
+import Deconnection from "./Page/Deconnection/Deconnection";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
         children: [
           { path: "panier", element: <Panier /> },
           { path: "profil", element: <Profil /> },
+            {path : "deconnection", element:<Deconnection/>},
         ],
       },
     ],

@@ -37,7 +37,7 @@ export default function Header() {
     localStorage.removeItem("token");
     login = null;
     dispatch(addlogin());
-    navigate("/");
+    navigate("/deconnection");
   }
 
    useEffect(() => {
